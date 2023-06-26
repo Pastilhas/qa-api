@@ -17,6 +17,8 @@ class Engine:
 """
         query_wrapper_prompt = SimpleInputPrompt("<|USER|>{query_str}<|ASSISTANT|>")
         stablelm_predictor = HuggingFaceLLMPredictor(
+            model_name="stabilityai/stablelm-tuned-alpha-3b",
+            tokenizer_name="stabilityai/stablelm-tuned-alpha-3b",
             max_new_tokens=256,
             generate_kwargs={"temperature": 0.7, "do_sample": False},
             system_prompt=system_prompt,
