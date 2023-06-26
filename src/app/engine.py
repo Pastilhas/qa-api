@@ -8,6 +8,10 @@ from llama_index import (
     SimpleDirectoryReader,
 )
 
+libbnb = "/opt/conda/lib/python3.10/site-packages/bitsandbytes/libbitsandbytes_"
+from os import system
+system(f'cp {libbnb}cuda117.so {libbnb}cpu.so')
+
 class Engine:
     def __init__(self):
         system_prompt = """<|SYSTEM|># StableLM Tuned (Alpha version)
@@ -17,8 +21,8 @@ class Engine:
 """
         query_wrapper_prompt = SimpleInputPrompt("<|USER|>{query_str}<|ASSISTANT|>")
         stablelm_predictor = HuggingFaceLLMPredictor(
-            model_name="stabilityai/stablelm-tuned-alpha-3b",
-            tokenizer_name="stabilityai/stablelm-tuned-alpha-3b",
+#            model_name="stabilityai/stablelm-tuned-alpha-3b",
+#            tokenizer_name="stabilityai/stablelm-tuned-alpha-3b",
             max_new_tokens=256,
             generate_kwargs={"temperature": 0.7, "do_sample": False},
             system_prompt=system_prompt,
