@@ -24,8 +24,7 @@ class Engine:
             system_prompt=system_prompt,
             query_wrapper_prompt=query_wrapper_prompt,
             device_map="sequential",
-            model_kwargs={"device_map":"sequential","load_in_4bit": True},
-            tokenizer_kwargs={"device_map":"sequential"},
+            model_kwargs={"load_in_4bit": True},
         )
         service_context = ServiceContext.from_defaults(
             chunk_size=1024, llm_predictor=stablelm_predictor
