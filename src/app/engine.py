@@ -19,7 +19,7 @@ system(f'cp {libbnb}cuda117.so {libbnb}cpu.so')
 class Engine:
     def __init__(self):
         _stderr = sys.stderr
-        sys.stderr = open("/dev/null")
+        sys.stderr = open("/dev/null", "w+")
         system_prompt = """<|SYSTEM|># StableLM Tuned (Alpha version)
 - StableLM is a helpful and harmless open-source AI language model developed by StabilityAI.
 - StableLM is excited to be able to help the user, but will refuse to do anything that could be considered harmful to the user.

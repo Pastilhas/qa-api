@@ -6,7 +6,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              capabilities: [gpu]
+              capabilities: [ gpu ]
 
   web:
     image: nginx:alpine
@@ -16,4 +16,3 @@ services:
       - ./nginx:/etc/nginx/conf.d
     depends_on:
       - app
-

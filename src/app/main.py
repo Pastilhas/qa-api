@@ -1,20 +1,29 @@
+import json
 from engine import engine
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
-        q = self.path[1:]
-        a = engine.ask(q)
-
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
-        self.wfile.write(bytes(f"{{query:{q},answer:{a}}}", "utf-8"))
+        self.wfile.write(bytes("Send a POST with query as string", "utf-8"))
+
+    def do_POST(self):
+        _len = int(self.headers['Content-Length'])
+        q = self.rfile.read(_len).decode("utf-8")
+
+        a = engine.ask(q)
+
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain")
+        self.end_headers()
+        self.wfile.write(bytes(json.dumps({"query": q, "answer": a}), "utf-8"))
 
 
 if __name__ == "__main__":
-    webServer = HTTPServer(('localhost', 8000), MyServer)
+    webServer = HTTPServer(('0.0.0.0', 8000), MyServer)
     try:
         webServer.serve_forever()
     except KeyboardInterrupt:
