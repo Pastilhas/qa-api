@@ -1,8 +1,13 @@
+import os
+
+if not os.path.exists("./data"):
+    print("The directory \'data\' does not exist")
+    exit(1)
+elif not os.listdir("./data"):
+    print("The directory \'data\' is empty")
+    exit(1)
+
 import sys
-from os import system
-from typing import cast
-import torch
-torch.set_num_threads(1)
 from llama_index.prompts.prompts import SimpleInputPrompt
 from llama_index.llm_predictor import HuggingFaceLLMPredictor
 from llama_index import (
@@ -13,7 +18,7 @@ from llama_index import (
 )
 
 libbnb = "/opt/conda/lib/python3.10/site-packages/bitsandbytes/libbitsandbytes_"
-system(f'cp {libbnb}cuda117.so {libbnb}cpu.so')
+os.system(f"cp {libbnb}cuda117.so {libbnb}cpu.so")
 
 
 class Engine:
