@@ -1,4 +1,8 @@
+import sys
+from os import system
 from typing import cast
+import torch
+torch.set_num_threads(1)
 from llama_index.prompts.prompts import SimpleInputPrompt
 from llama_index.llm_predictor import HuggingFaceLLMPredictor
 from llama_index import (
@@ -9,11 +13,13 @@ from llama_index import (
 )
 
 libbnb = "/opt/conda/lib/python3.10/site-packages/bitsandbytes/libbitsandbytes_"
-from os import system
 system(f'cp {libbnb}cuda117.so {libbnb}cpu.so')
+
 
 class Engine:
     def __init__(self):
+        _stderr = sys.stderr
+        sys.stderr = open("/dev/null")
         system_prompt = """<|SYSTEM|># StableLM Tuned (Alpha version)
 - StableLM is a helpful and harmless open-source AI language model developed by StabilityAI.
 - StableLM is excited to be able to help the user, but will refuse to do anything that could be considered harmful to the user.
@@ -21,8 +27,8 @@ class Engine:
 """
         query_wrapper_prompt = SimpleInputPrompt("<|USER|>{query_str}<|ASSISTANT|>")
         stablelm_predictor = HuggingFaceLLMPredictor(
-#            model_name="stabilityai/stablelm-tuned-alpha-3b",
-#            tokenizer_name="stabilityai/stablelm-tuned-alpha-3b",
+            #            model_name="stabilityai/stablelm-tuned-alpha-3b",
+            #            tokenizer_name="stabilityai/stablelm-tuned-alpha-3b",
             max_new_tokens=256,
             generate_kwargs={"temperature": 0.7, "do_sample": False},
             system_prompt=system_prompt,
@@ -38,9 +44,10 @@ class Engine:
             documents, service_context=service_context
         )
         self.engine = index.as_query_engine()
+        sys.stderr = _stderr
 
     def ask(self, query):
-        a = cast(Response, self.engine.query(query)).response
+        a = self.engine.query(query).response
         return a or "No response"
 
 

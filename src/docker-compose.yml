@@ -1,10 +1,6 @@
-version: '3.7'
-
 services:
   app:
     build: .
-    networks:
-      - webnet
     deploy:
       resources:
         reservations:
@@ -20,9 +16,4 @@ services:
       - ./nginx:/etc/nginx/conf.d
     depends_on:
       - app
-    networks:
-      - webnet
 
-networks:
-  webnet:
-    driver: bridge
