@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
-        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Type", "text/plain")
         self.end_headers()
         self.wfile.write(bytes("Send a POST with query as string", "utf-8"))
 
@@ -17,7 +17,7 @@ class MyServer(BaseHTTPRequestHandler):
         a = engine.ask(q)
 
         self.send_response(200)
-        self.send_header("Content-Type", "text/plain")
+        self.send_header("Content-Type", "application/json")
         self.end_headers()
         self.wfile.write(bytes(json.dumps({"query": q, "answer": a}), "utf-8"))
 
